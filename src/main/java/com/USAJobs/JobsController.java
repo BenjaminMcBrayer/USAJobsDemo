@@ -51,4 +51,44 @@ public class JobsController {
 		
 		return new ModelAndView ("results", "results", jsonSearchResult.getLanguageCode());
 	}
+	
+	@RequestMapping("/count")
+	public ModelAndView count() {
+		RestTemplate restTemplate = new RestTemplate();
+		
+		HttpHeaders headers = new HttpHeaders();
+		headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
+		headers.setContentType(MediaType.APPLICATION_JSON);
+		headers.set("Host", host);
+		headers.set("User-Agent", email);
+		headers.set("Authorization-Key", key);
+		
+		HttpEntity<String> entity = new HttpEntity<String>("parameters", headers);
+		ResponseEntity<JsonSearchResult> response = restTemplate.exchange("https://data.usajobs.gov/api/Search?KeywordFilter=ALL&JobCategoryCode=2210", HttpMethod.GET, entity, JsonSearchResult.class);		
+		
+		JsonSearchResult jsonSearchResult = response.getBody();
+		
+		return new ModelAndView ("count", "count", "Count: " + jsonSearchResult.getResult().getCount());
+	}
+	
+	@RequestMapping("/keywordsearch")
+	public ModelAndView keywordSearch() {
+		RestTemplate restTemplate = new RestTemplate();
+		
+		HttpHeaders headers = new HttpHeaders();
+		headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
+		headers.setContentType(MediaType.APPLICATION_JSON);
+		headers.set("Host", host);
+		headers.set("User-Agent", email);
+		headers.set("Authorization-Key", key);
+		
+		HttpEntity<String> entity = new HttpEntity<String>("parameters", headers);
+		ResponseEntity<JsonSearchResult> response = restTemplate.exchange("https://data.usajobs.gov/api/Search?PositionTitle=Psychologist", HttpMethod.GET, entity, JsonSearchResult.class);		
+		
+		JsonSearchResult jsonSearchResult = response.getBody();
+		
+		ModelAndView mv = new ModelAndView ("keywordsearch", "searchcount", "Count: " + jsonSearchResult.getResult().getCount());
+		mv.addObject("items", jsonSearchResult.getResult().getItems());
+		return mv;
+	}
 }

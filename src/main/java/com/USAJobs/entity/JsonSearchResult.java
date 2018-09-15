@@ -8,6 +8,8 @@ public class JsonSearchResult {
 
 	@JsonProperty("LanguageCode")
 	private String languageCode;
+	@JsonProperty("SearchResult")
+	private SearchResult result;
 
 	/**
 	 * 
@@ -29,6 +31,20 @@ public class JsonSearchResult {
 	 */
 	public void setLanguageCode(String languageCode) {
 		this.languageCode = languageCode;
+	}
+
+	/**
+	 * @return the result
+	 */
+	public SearchResult getResult() {
+		return result;
+	}
+
+	/**
+	 * @param result the result to set
+	 */
+	public void setResult(SearchResult result) {
+		this.result = result;
 	}
 
 }
